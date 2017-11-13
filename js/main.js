@@ -20,8 +20,9 @@ $(function () {
         return false;
     });
 });
-$(window).bind('popstate', function () {
-    if (document.location.pathname != JSON.stringify(event.state.path)) {
+
+window.onpopstate = function (event) {
+    if (!JSON.stringify(event.state).hasOwnProperty("path") || JSON.stringify(event.state.path) == undefined || document.location.pathname != JSON.stringify(event.state.path)) {
         $.ajax({
             url: location.pathname + '?rel=tab', success: function (data) {
                 var con = $('#content');
@@ -33,4 +34,24 @@ $(window).bind('popstate', function () {
             }
         });
     }
-});
+}
+
+
+
+
+
+
+/* $(window).on('popstate', function (event) {
+    if (!JSON.stringify(event.state).hasOwnProperty("path") || JSON.stringify(event.state.path) == undefined || document.location.pathname != JSON.stringify(event.state.path)) {
+        $.ajax({
+            url: location.pathname + '?rel=tab', success: function (data) {
+                var con = $('#content');
+                con.hide(500);
+                setTimeout(function () {
+                    con.html(data);
+                }, 500);
+                con.show(500);
+            }
+        });
+    }
+}); */
